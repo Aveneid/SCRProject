@@ -4,46 +4,45 @@ import time
 
 class Philosopher(threading.Thread):
 
-    def __init__(self, name, forkl, forkr, stopevent):
+    def __init__(self, name, stickl, stickr, ending):
         threading.Thread.__init__(self)
         self.name = name
-        self.forkl = forkl
-        self.forkr = forkr
-        self.stopevent = stopevent
+        self.stickl = stickl
+        self.stickr = stickr
+        self.ending = ending
 
     def run(self):
-        while not self.stopevent.is_set():
+        while not self.ending.is_set():
             self.think()
             self.dine()
 
     def think(self):
-        print(self.name+ 'is thinking.')
+        print(self.name+ ' czeka. ')
 
     def dine(self):
-        print(self.name+ 'is hungry.')
-        self.forkl.acquire()
-        self.forkr.acquire()
-        print(self.name+ 'is dining.')
-        print(self.name+ 'finished dining.')
-        self.forkl.release()
-        self.forkr.release()
+        print(self.name+ ' jest glodny. ')
+        self.stickl.acquire()
+        self.stickr.acquire()
+        print(self.name+ ' je. ')
+        print(self.name+ ' skonczyl jesc. ')
+        self.stickl.release()
+        self.stickr.release()
 
 
-def main():
-    forks = [threading.Lock() for i in range(5)]
-    stopevent = threading.Event()
-    philosophers = [Philosopher('Philosopher %i' % i, forks[i%5], forks[(i+1)%5], stopevent) for i in range(5)]
-    for p in philosophers:
-        p.start()
 
-    time.sleep(10)
-    print('[Setting Stop-Event.]')
-    stopevent.set()
-    print('[Waiting for Philosophers to stop...')
-    for p in philosophers:
-        p.join()
-    print('Done.')
+sticks = [threading.Lock() for i in range(5)]
+ending = threading.Event()
+philosophers = [Philosopher('Filozof %i' % i, sticks[i%5], sticks[(i+1)%5], ending) for i in range(5)]
+
+for p in philosophers:
+    p.start()
+time.sleep(10)
+print('[[Koniec imprezy]]')
+ending.set()
+
+print('[[Oczekiwanie az filozofowie skoncza swoje czynnosci]]')
+for p in philosophers:
+    p.join()
+print('Dziekuje dobranoc')
 
 
-if __name__ == '__main__':
-    main()
