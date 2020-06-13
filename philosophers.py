@@ -1,8 +1,7 @@
 import threading
 import time
 
-
-class Philosopher(threading.Thread):
+class Filozof(threading.Thread):
 
     def __init__(self, name, stickl, stickr, ending):
         threading.Thread.__init__(self)
@@ -32,17 +31,17 @@ class Philosopher(threading.Thread):
 
 sticks = [threading.Lock() for i in range(5)]
 ending = threading.Event()
-philosophers = [Philosopher('Filozof %i' % i, sticks[i%5], sticks[(i+1)%5], ending) for i in range(5)]
+filozofowie = [Filozof('Filozof %i' % i, sticks[i%5], sticks[(i+1)%5], ending) for i in range(5)]
 
-for p in philosophers:
-    p.start()
+for f in filozofowie:
+    f.start()
 time.sleep(10)
-print('[[Koniec imprezy]]')
+print('\n[[Koniec imprezy]]\n')
 ending.set()
 
-print('[[Oczekiwanie az filozofowie skoncza swoje czynnosci]]')
-for p in philosophers:
-    p.join()
-print('Dziekuje dobranoc')
+print('\n[[Oczekiwanie az filozofowie skoncza swoje czynnosci]]\n')
+for f in filozofowie:
+    f.join()
+print('\nDziekuje dobranoc.')
 
 
