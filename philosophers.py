@@ -57,14 +57,18 @@ for f in filozofowie:
 time.sleep(10)
 
 print('\n[[Koniec imprezy]]\n')
-#Utawienie flagi konca "uczty" - wymuszenie ukonczenia dzialan przez instancje klasy1
+#Ustawienie flagi konca "uczty" - wymuszenie ukonczenia dzialan przez instancje klasy1
 ending.set()
 
 print('\n[[Oczekiwanie az filozofowie skoncza swoje czynnosci]]\n')
-#
-for f in filozofowie:
-    f.join()
 
+print("#####################")
+print(filozofowie)
+for f in filozofowie:
+    print(f.join())
+    f.join()
+print(filozofowie)
+print("#####################")
 print('\nDziekuje dobranoc.')
 
 
